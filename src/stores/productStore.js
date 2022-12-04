@@ -11,7 +11,7 @@ export let categories = writable([]);
 
 //
 // Used to Initialise  requests
-// parameters: http method and body content note default values)
+// parameters: http method,  body content, and Auth token. note default values)
 const initRequest = (http_method = 'GET', body_data = '', access_token = '') => {
 
     let request = {
@@ -20,6 +20,7 @@ const initRequest = (http_method = 'GET', body_data = '', access_token = '') => 
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json",
+            // Set the Auth Header
             "Authorization": `Bearer ${access_token}`
         },
         mode: 'cors',

@@ -4,6 +4,7 @@ import { invalid, redirect } from "@sveltejs/kit"
 // Import the addNewProduct() function from the product store.
 import { addNewProduct } from '../../stores/productStore.js';
 
+
 // The form action handler(s)
 export const actions = {
 
@@ -24,23 +25,30 @@ export const actions = {
         product_price: Number(form_data.get('product_price'))
       }
 
+      // read the token
+      const token = form_data.get('token');
+
+
       // Basic validation
       if (product.category_id > 0 &&
           product.product_name != '' &&
           product.product_description != '' &&
           product.product_stock > 0 &&
-          product.product_price > 0
+          product.product_price > 0 &&
+          token != ''
+          
       ) {
+
           // Add the new product via the API (using the product store function)
-          const result = await addNewProduct(JSON.stringify(product));
+          const result = await addNewProduct(JSON.stringify(product), token);
           console.log('add product result: ', result)
 
         // return the result
         // This will display the success section of the page to show the newly added product
         return { 
           success: true,
-          message: `New product added with id: ${result.product.id}`,
-          product: result.product
+          message: `New product added with id: ${result?.product.id}`,
+          product: result?.product
         };
 
         // This will cause the form to redisplay for corrections, along with an error message

@@ -4,6 +4,7 @@
 	import { enhance, applyAction } from '$app/forms';
 
 	// Import the store etc.
+	import { isAuthenticated, token } from '../../stores/authStore';
 	import { categories, getAllCategories } from '../../stores/productStore.js';
 
 	export let data;
@@ -28,7 +29,7 @@
 <!-- Main Content - Products etc. -->
 <div class="container">
 	<!-- If the insert was sucessfull display the new product details-->
-	{#if form?.success}
+	{#if form?.success && $isAuthenticated}
 
 		<div class="row">
 			<!-- Page Header -->
@@ -88,7 +89,7 @@
 						<select id="category_id" class="form-select" name="category_id">
 							<option value="0">Choose a category</option>
 							{#each $categories as cat}
-								<option value={cat.id}>{cat.category_name}</option>
+								<option value="{cat.id}">{cat.category_name}</option>
 							{/each}
 						</select>
 					</div>
@@ -145,7 +146,8 @@
 					</div>
 				</div>
 				<!-- productId is a hidden field value is not required but set = 0-->
-				<input id="id" type="hidden" value="0" />
+				<input name="id" type="hidden" value="0" />
+				<input name="token" type="hidden" value="{$token}" />
 				<div class="mb-3">
 					<button type="submit" class="btn btn-primary"> Add Product </button>
 					<a href="/" class="btn btn-secondary"> Cancel </a>
